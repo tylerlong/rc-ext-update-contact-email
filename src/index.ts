@@ -12,7 +12,19 @@ const main = async () => {
     extension: process.env.RINGCENTRAL_EXTENSION,
     password: process.env.RINGCENTRAL_PASSWORD!,
   });
-  console.log(rc.token?.access_token);
+  let extInfo = await rc.restapi().account().extension().get();
+  console.log(extInfo.contact);
+  await rc
+    .restapi()
+    .account()
+    .extension()
+    .put({
+      contact: {
+        email: 'tyler4long+dre2@gmail.com',
+      },
+    });
+  extInfo = await rc.restapi().account().extension().get();
+  console.log(extInfo.contact);
   await rc.revoke();
 };
 
